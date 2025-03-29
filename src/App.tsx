@@ -1,6 +1,28 @@
 import React, { useState } from 'react';
 import { Dumbbell, Brain, Heart, ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDThrE0QyG2slsOfAoHnIjkZNn_EQFBSEc",
+  authDomain: "gamify-fitness-app.firebaseapp.com",
+  projectId: "gamify-fitness-app",
+  storageBucket: "gamify-fitness-app.firebasestorage.app",
+  messagingSenderId: "279040358030",
+  appId: "1:279040358030:web:22ebb9a3f61d8daf3efbdf",
+  measurementId: "G-QZ26S8ZR7G"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 interface Stats {
   strength: number;
   intelligence: number;
