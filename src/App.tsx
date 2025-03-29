@@ -14,13 +14,13 @@ import { v4 as uuidv4 } from 'uuid';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDThrE0QyG2slsOfAoHnIjkZNn_EQFBSEc",
-  authDomain: "gamify-fitness-app.firebaseapp.com",
-  projectId: "gamify-fitness-app",
-  storageBucket: "gamify-fitness-app.firebasestorage.app",
-  messagingSenderId: "279040358030",
-  appId: "1:279040358030:web:22ebb9a3f61d8daf3efbdf",
-  measurementId: "G-QZ26S8ZR7G"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
