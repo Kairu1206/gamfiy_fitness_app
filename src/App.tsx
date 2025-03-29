@@ -4,11 +4,15 @@ import { Dumbbell, Brain, Heart, ChevronDown, ChevronUp, HelpCircle } from 'luci
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
 const firebaseConfig = {
   apiKey: "AIzaSyDThrE0QyG2slsOfAoHnIjkZNn_EQFBSEc",
   authDomain: "gamify-fitness-app.firebaseapp.com",
@@ -22,6 +26,19 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+const getUserId = () => {
+  let userId = localStorage.getItem("userId");
+  if (!userId) {
+    userId = uuidv4();
+    localStorage.setItem("userId", userId);
+  }
+  return userId;
+};
+
+const userId = getUserId();
+
 
 interface Stats {
   strength: number;
@@ -35,6 +52,29 @@ function App() {
     intelligence: 0,
     endurance: 0,
   });
+  const addStat = async () => {
+    try {
+      await addDoc(collection(db, "stats"), {
+        userId,
+        strength: stats.strength,
+        intelligence: stats.intelligence,
+        endurance: stats.endurance,
+        timestamp: new Date()
+      });
+      console.log("Stats saved!");
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  const fetchStats = async () => {
+    const statsQuery = query(collection(db, "stats"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(statsQuery);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+  };
+  
 
   const [inputs, setInputs] = useState({
     weightLifted: 0,
@@ -68,6 +108,9 @@ function App() {
     <div className="min-h-screen bg-white text-black p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-4xl font-bold text-center mb-8">Fitness Tracker</h1>
+
+        <button onClick={addStat} className="bg-blue-500 text-white px-4 py-2 rounded">Save Stats</button>
+        <button onClick={fetchStats} className="bg-green-500 text-white px-4 py-2 rounded ml-4">Fetch Stats</button>
         
         {/* Stats Display */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
